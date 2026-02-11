@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Poker Nights</title>
+
+  <!-- Open Graph / Link Preview -->
+  <meta property="og:title" content="Poker Nights">
+  <meta property="og:description" content="Fri 20 Feb — Chez G">
+  <meta property="og:image" content="assets/images/thumb.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Poker Nights">
+  <meta name="twitter:description" content="Fri 20 Feb — Chez G">
+  <meta name="twitter:image" content="assets/images/thumb.jpg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400;700&display=swap" rel="stylesheet">
@@ -129,6 +142,102 @@
         display: none;
       }
     }
+
+    /* RSVP Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal {
+      width: 80%;
+      max-width: 320px;
+      padding: 2.5rem 2rem;
+      background: rgba(255, 144, 0, 0.08);
+      border-radius: 8px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .modal-title {
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-family: 'Inria Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 4px;
+      outline: none;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+
+    .modal-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .modal-submit {
+      margin-top: 1.5rem;
+      padding: 0.8rem 2.5rem;
+      width: 100%;
+      font-family: 'Inria Sans', sans-serif;
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #FF9000;
+      background: rgba(255, 144, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-family: 'Inria Sans', sans-serif;
+      font-weight: 300;
+    }
+
+    .modal-confirmation {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #FF9000;
+    }
   </style>
 </head>
 <body>
@@ -159,6 +268,67 @@
     </div>
     </div>
   </div>
+
+  <!-- RSVP Modal -->
+  <div class="modal-backdrop" id="rsvpModal">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal">
+      <div id="rsvpForm">
+        <div class="modal-title">Enter your name</div>
+        <form id="rsvpFormEl" action="https://formsubmit.co/grrdoleon@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Poker Night RSVP">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="name" class="modal-input" placeholder="Your name" required autocomplete="off">
+          <button type="submit" class="modal-submit">Confirm</button>
+        </form>
+      </div>
+      <div id="rsvpConfirmation" style="display:none;">
+        <div class="modal-confirmation">You're in</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const rsvpBtn = document.querySelector('.rsvp-btn');
+    const modal = document.getElementById('rsvpModal');
+    const modalClose = document.getElementById('modalClose');
+    const form = document.getElementById('rsvpFormEl');
+    const formView = document.getElementById('rsvpForm');
+    const confirmView = document.getElementById('rsvpConfirmation');
+
+    rsvpBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      modal.classList.add('active');
+    });
+
+    modalClose.addEventListener('click', function() {
+      modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const submitBtn = form.querySelector('.modal-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function() {
+        formView.style.display = 'none';
+        confirmView.style.display = 'block';
+      }).catch(function() {
+        formView.style.display = 'none';
+        confirmView.style.display = 'block';
+      });
+    });
+  </script>
 
 </body>
 </html>
