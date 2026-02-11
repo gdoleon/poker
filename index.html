@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Poker Nights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -16,7 +19,7 @@
       height: 100%;
       overflow: hidden;
       background: #000;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-family: 'Inria Sans', sans-serif;
     }
 
     .video-bg {
@@ -26,7 +29,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 0;
     }
 
     /* Dark overlay so text stays readable over any video */
@@ -37,12 +39,10 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.4);
-      z-index: 1;
     }
 
     .content {
       position: relative;
-      z-index: 2;
       width: 100%;
       height: 100dvh;
       display: flex;
@@ -57,19 +57,65 @@
       top: 12vh;
       text-align: center;
       font-size: clamp(1rem, 4vw, 1.5rem);
-      font-weight: 400;
-      letter-spacing: 0.05em;
+      font-weight: 300;
+      letter-spacing: 0.3em;
       line-height: 1.6;
       text-transform: uppercase;
     }
 
     .hero {
-      font-size: clamp(3rem, 14vw, 8rem);
-      font-weight: 800;
+      font-size: 7vw;
+      font-weight: 100;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.3em;
       text-align: center;
       line-height: 1.1;
+      color: #FF8800;
+      mix-blend-mode: screen;
+    }
+
+    .rsvp-btn {
+      margin-top: 2rem;
+      padding: 0.8rem 2.5rem;
+      font-family: 'Inria Sans', sans-serif;
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      width: 30%;
+      letter-spacing: 0.3em;
+      color: #FF9000;
+      background: rgba(255, 144, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .footer-logo {
+      position: absolute;
+      bottom: 6vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-logo-desktop {
+      display: none;
+    }
+
+    .footer-logo-mobile {
+      display: block;
+    }
+
+    @media (min-width: 768px) {
+      .footer-logo-desktop {
+        display: block;
+      }
+      .footer-logo-mobile {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -87,7 +133,16 @@
       Fri 20 Feb<br>Chez G
     </div>
     <div class="hero">
-      Poker<br>Nights
+      Poker Nights
+    </div>
+    <a class="rsvp-btn" href="#">RSVP</a>
+    <div class="footer-logo">
+      <img src="assets/images/logo.svg" alt="Logo" width="35" height="35" class="footer-logo-img footer-logo-desktop">
+      <svg width="35" height="35" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="footer-logo-mobile">
+        <rect width="20" height="20" rx="3.2" fill="black"/>
+        <path d="M10.8568 3.42871H9.14252L4.57109 14.2859H6.22566L10.8568 3.42871Z" fill="white"/>
+        <path d="M8.57085 14.2856V12.5713H15.8605V14.2856H8.57085Z" fill="white"/>
+      </svg>
     </div>
   </div>
 
